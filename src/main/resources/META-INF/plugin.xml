@@ -1,0 +1,52 @@
+<idea-plugin>
+    <id>com.github.wpm.lean</id>
+    <name>Lean 4</name>
+    <vendor url="https://github.com/wpm/Lean-Plugin">wpm</vendor>
+
+    <depends>com.intellij.modules.platform</depends>
+    <!-- The native LSP API. Only available in the commercial IDEs (IntelliJ IDEA Ultimate, PyCharm, CLion, ...). -->
+    <depends>com.intellij.modules.lsp</depends>
+
+    <resource-bundle>messages.LeanBundle</resource-bundle>
+
+    <extensions defaultExtensionNs="com.intellij">
+        <fileType name="Lean"
+                  implementationClass="com.github.wpm.lean.LeanFileType"
+                  fieldName="INSTANCE"
+                  language="Lean4"
+                  extensions="lean"/>
+        <lang.parserDefinition language="Lean4" implementationClass="com.github.wpm.lean.parser.LeanParserDefinition"/>
+        <lang.syntaxHighlighterFactory language="Lean4" implementationClass="com.github.wpm.lean.highlighting.LeanSyntaxHighlighterFactory"/>
+        <colorSettingsPage implementation="com.github.wpm.lean.highlighting.LeanColorSettingsPage"/>
+        <lang.commenter language="Lean4" implementationClass="com.github.wpm.lean.editor.LeanCommenter"/>
+        <lang.braceMatcher language="Lean4" implementationClass="com.github.wpm.lean.editor.LeanBraceMatcher"/>
+
+        <platform.lsp.serverSupportProvider implementation="com.github.wpm.lean.lsp.LeanLspServerSupportProvider"/>
+
+        <toolWindow id="Lean Infoview"
+                    anchor="right"
+                    icon="/icons/toolWindowLean.svg"
+                    factoryClass="com.github.wpm.lean.infoview.LeanInfoviewToolWindowFactory"/>
+
+        <typedHandler implementation="com.github.wpm.lean.unicode.LeanAbbreviationTypedHandler"/>
+        <editorActionHandler action="EditorTab"
+                             implementationClass="com.github.wpm.lean.unicode.LeanAbbreviationTabHandler"
+                             order="first"/>
+
+        <projectConfigurable parentId="language"
+                             instance="com.github.wpm.lean.settings.LeanConfigurable"
+                             id="com.github.wpm.lean.settings"
+                             displayName="Lean 4"
+                             nonDefaultProject="true"/>
+
+        <notificationGroup id="Lean" displayType="BALLOON" bundle="messages.LeanBundle" key="notification.group.lean"/>
+    </extensions>
+
+    <actions>
+        <action id="Lean.RestartServer"
+                class="com.github.wpm.lean.actions.LeanRestartServerAction"
+                icon="AllIcons.Actions.Restart">
+            <add-to-group group-id="ToolsMenu" anchor="last"/>
+        </action>
+    </actions>
+</idea-plugin>
